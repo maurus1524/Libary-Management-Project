@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import {Button,Table} from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Books from './Books';
-import {Link,useNavigate} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom';
+import NavBar from './NavBar';
 
 function Home(){
 
@@ -15,10 +16,12 @@ function Home(){
 
         Books.splice(index,1);
 
-        history('/');
+        history('/home');
     }
 
     return (
+        <>
+        <NavBar></NavBar>
         <Fragment>
             <div style={{margin:"10%"}}>
             <Table striped bordered hover size="sm">
@@ -55,8 +58,6 @@ function Home(){
                                         {item.Available}
                                     </td>
                                     <td>
-                                    <Button onClick={() => alert(item.id)}>Edit</Button>
-                                    &nbsp;
                                     <Button onClick={() => deleteBook(item.id)}>Remove</Button>
                                     </td>
                                 </tr>
@@ -68,11 +69,12 @@ function Home(){
                 </tbody>
             </Table>
             <br />
-            <Link className='d-grid gap-2' to="/create">
+            <Link className='d-grid gap-2' to="/home/create">
                 <Button size='lg'>Add Book</Button>
             </Link>
             </div>
         </Fragment>
+    </>
     )
 }
 
