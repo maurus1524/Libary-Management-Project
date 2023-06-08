@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState,useEffect } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Books from './Books';
@@ -9,8 +9,28 @@ import NavBar from './NavBar';
 function Home() {
   const booksPerPage = 10; // Number of books to display per page
   const [currentPage, setCurrentPage] = useState(1);
+  const [bookmarkedBooks, setBookmarkedBooks] = useState([]);
 
   let history = useNavigate();
+
+  const handleMark = (book) => {
+    const { id, title, author, subject, publishDate } = book;
+  
+    setBookmarkedBooks((prevBookmarks) => [
+      ...prevBookmarks,
+      {
+        id,
+        title,
+        author,
+        subject,
+        publishDate,
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    console.log(bookmarkedBooks);
+  }, [bookmarkedBooks]);  
 
   const deleteBook = (id) => {
     var index = Books.map(function (e) {
@@ -26,34 +46,11 @@ function Home() {
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const currentBooks = Books.slice(indexOfFirstBook, indexOfLastBook);
-
-  // Change page
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Calculate total number of pages
   const totalPages = Math.ceil(Books.length / booksPerPage);
 
-  // Determine the range of page numbers to display
-  let startPage, endPage;
-  if (totalPages <= 5) {
-    // Display all page numbers if total pages are less than or equal to 5
-    startPage = 1;
-    endPage = totalPages;
-  } else {
-    // Display a range of page numbers based on the current page
-    if (currentPage <= 3) {
-      startPage = 1;
-      endPage = 5;
-    } else if (currentPage + 1 >= totalPages) {
-      startPage = totalPages - 4;
-      endPage = totalPages;
-    } else {
-      startPage = currentPage - 2;
-      endPage = currentPage + 2;
-    }
-  }
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  window.bookmarkedBooks = bookmarkedBooks;
 
   return (
     <>
@@ -92,6 +89,7 @@ function Home() {
                       <td>{item.publishDate}</td>
                       <td>
                         <Button style={{ height: "100%" }} onClick={() => deleteBook(item.id)}>Remove</Button>
+                        <Button style={{ height: "100%",marginLeft:"3%" }} onClick={() => handleMark(item)}>Bookmark</Button>
                       </td>
                     </tr>
                   );
@@ -104,38 +102,37 @@ function Home() {
             </tbody>
           </Table>
           <br />
-          <div>
-            {startPage > 1 && (
-              <Button
-                variant="link"
-                onClick={() => handlePageChange(startPage - 1)}
-                style={{ marginRight: "5px",textDecoration:"none",fontWeight:"bold" }}
-              >
-                {"<"}
-              </Button>
-            )}
-            {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map(
-              (pageNumber) => (
-                <Button
-                  key={pageNumber}
-                  variant={currentPage === pageNumber ? "primary" : "outline-primary"}
-                  onClick={() => handlePageChange(pageNumber)}
-                  style={{ marginLeft: "5px"}}
-                >
-                  {pageNumber}
-                </Button>
-              )
-            )}
-            {endPage < totalPages && (
-              <Button
-                variant="link"
-                onClick={() => handlePageChange(endPage + 1)}
-                style={{ marginLeft: "5px",textDecoration:"none",fontWeight:"bold" }}
-              >
-                {">"}
-              </Button>
-            )}
-          </div>
+          <nav>
+            <ul className="pagination justify-content-center">
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => paginate(currentPage - 1)}>
+                  <span style={{ color: currentPage === 1 ? '#777' : '' }}>&lt;</span>
+                </button>
+              </li>
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1;
+                const isCurrentPage = currentPage === page;
+                const isMiddlePage = page >= currentPage - 2 && page <= currentPage + 2;
+
+                if (isMiddlePage || isCurrentPage) {
+                  return (
+                    <li key={index} className={`page-item ${isCurrentPage ? 'active' : ''}`}>
+                      <button className="page-link" onClick={() => paginate(page)}>
+                        {page}
+                      </button>
+                    </li>
+                  );
+                }
+
+                return null;
+              })}
+              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => paginate(currentPage + 1)}>
+                  <span style={{ color: currentPage === totalPages ? '#777' : '' }}>&gt;</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
           <br />
           <Link className='d-grid gap-2' to="/home/create">
             <Button size='lg'>Add Book</Button>

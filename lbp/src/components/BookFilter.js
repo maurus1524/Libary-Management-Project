@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Books from './Books';
 import { Table } from "react-bootstrap";
@@ -10,30 +10,47 @@ function BookFilter() {
   const[title,setTitle] = React.useState('');
   const[author,setAuthor] = React.useState('');
   const[subject,setSubject] = React.useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const booksPerPage = 10;
 
   React.useEffect(() => {
     const data = Books;
 
     setUserData(data);
     setuserSearchData(data);
+    setCurrentPage(1);
   },[])
 
   const handleSearch = () => {
-    const titleWords = title.toLowerCase().split(' ');
-    const authorWords = author.toLowerCase().split(' ');
-
     const newpri = userData.filter(x => {
       const lowercaseTitle = x.title.toLowerCase();
       const lowercaseAuthor = x.author.toLowerCase();
-      const titleMatch = titleWords.some(word => lowercaseTitle.includes(word));
-      const authorMatch = authorWords.some(word => lowercaseAuthor.includes(word));
+      const lowercaseSearchTitle = title.toLowerCase();
+      const lowercaseSearchAuthor = author.toLowerCase();
 
+      const titleMatch = lowercaseTitle.includes(lowercaseSearchTitle);
+
+      const authorMatch = lowercaseAuthor.includes(lowercaseSearchAuthor);
+  
       return (titleMatch || title === '') && (authorMatch || author === '');
     });
-
-    const newData = newpri.filter(y => y.subject.toLowerCase().includes(subject.toLowerCase()) || subject === '');
+  
+    const newData = newpri.filter(y => {
+      const lowercaseSubject = y.subject.toLowerCase();
+      const lowercaseSearchSubject = subject.toLowerCase();
+      return lowercaseSubject.includes(lowercaseSearchSubject) || subject === '';
+    });
     setuserSearchData(newData);
+    setCurrentPage(1);
   }
+
+  const indexOfLastBook = currentPage * booksPerPage;
+  const indexOfFirstBook = indexOfLastBook - booksPerPage;
+  const currentBooks = userSearchData.slice(indexOfFirstBook, indexOfLastBook);
+  const totalPages = Math.ceil(userSearchData.length / booksPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
 
   return <div>
     <NavBar></NavBar>
@@ -63,7 +80,7 @@ function BookFilter() {
         </td>
       </tr>
     </Table>
-
+    <h2 style={{margin:"3vh"}}>Available Books</h2>
     <Table responsive striped bordered hover size="sm">
       <thead>
         <tr>
@@ -74,20 +91,54 @@ function BookFilter() {
         </tr>
       </thead>
       <tbody>
-        { 
-        userSearchData && userSearchData.length >0 ? 
-        userSearchData.map(item => 
-          <tr>
-            <td>{item.title}</td>
-            <td>{item.author}</td>
-            <td>{item.subject}</td>
-            <td>{item.publishDate}</td>
-          </tr>
-          )
-          : 'No Data'
-        }
-      </tbody>
+      {currentBooks.length > 0 ? (
+            currentBooks.map(item => (
+              <tr key={item.id}>
+                <td>{item.title}</td>
+                <td>{item.author}</td>
+                <td>{item.subject}</td>
+                <td>{item.publishDate}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">No Data</td>
+            </tr>
+          )}
+        </tbody>
+        <nav style={{ position: "fixed", bottom: "10vh", left: "50%", transform: "translateX(-50%)" }}>
+          <ul className="pagination justify-content-center">
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => paginate(currentPage - 1)}>
+                  <span style={{ color: currentPage === 1 ? '#777' : '' }}>&lt;</span>
+                </button>
+              </li>
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1;
+                const isCurrentPage = currentPage === page;
+                const isMiddlePage = page >= currentPage - 2 && page <= currentPage + 2;
+
+                if (isMiddlePage || isCurrentPage) {
+                  return (
+                    <li key={index} className={`page-item ${isCurrentPage ? 'active' : ''}`}>
+                      <button className="page-link" onClick={() => paginate(page)}>
+                        {page}
+                      </button>
+                    </li>
+                  );
+                }
+
+                return null;
+              })}
+              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button className="page-link" onClick={() => paginate(currentPage + 1)}>
+                  <span style={{ color: currentPage === totalPages ? '#777' : '' }}>&gt;</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
     </Table>
+
   </div>
 }
 

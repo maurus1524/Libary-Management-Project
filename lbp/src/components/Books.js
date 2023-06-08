@@ -504,13 +504,6 @@ const Books = [
     publishDate: "2006-09-26"
     },
     {
-    id: "9780062315007",
-    title: "Red Queen",
-    author: "Victoria Aveyard",
-    subject: "Young Adult",
-    publishDate: "2015-02-10"
-    },
-    {
     id: "9780525563281",
     title: "Eleanor Oliphant Is Completely Fine",
     author: "Gail Honeyman",
@@ -551,13 +544,6 @@ const Books = [
     author: "Khaled Hosseini",
     subject: "Historical Fiction",
     publishDate: "2003-05-29"
-    },
-    {
-    id: "9780062315007",
-    title: "Red Queen",
-    author: "Victoria Aveyard",
-    subject: "Young Adult",
-    publishDate: "2015-02-10"
     },
     {
     id: "9780060838676",
