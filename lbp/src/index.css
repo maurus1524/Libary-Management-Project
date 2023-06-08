@@ -84,3 +84,19 @@ p {
   border-width: 5px;
   box-shadow: none;
 }
+
+.navbar a:hover span{
+  color: white;
+}
+
+.startbg{
+  background-image: linear-gradient(to bottom left, rgb(182, 242, 246), rgb(57, 17, 68));
+}
+
+.createbg{
+  background-image: linear-gradient(to bottom right, rgb(2, 22, 194), rgb(151, 5, 192));
+}
+
+.bookmarkpg{
+  background: linear-gradient(to bottom left, #5934ec , #340907);
+}

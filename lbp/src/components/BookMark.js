@@ -21,10 +21,10 @@ function BookMark(){
       }
 
     return (
-        <>
+        <div className="bookmarkpg" style={{height:"100vh"}}>
             <NavBar />
             <Fragment>
-                <h2 style={{ margin: "1%" }}>Your Bookmark</h2>
+                <h2 style={{ margin: "1%",color:"#bed3e8" }}>Your Bookmark</h2>
                 <div style={{ marginTop: "2%", marginLeft: "5%", marginRight: "5%", fontSize: "15px" }}>
                 <Table striped bordered hover size="sm" style={{ tableLayout: "fixed" }}>
                     <thead>
@@ -70,7 +70,7 @@ function BookMark(){
                 </Table>
                 </div>
             </Fragment>
-        </>
+        </div>
     )
 }
 

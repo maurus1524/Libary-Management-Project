@@ -53,7 +53,7 @@ function Home() {
   window.bookmarkedBooks = bookmarkedBooks;
 
   return (
-    <>
+    <div>
       <NavBar />
       <Fragment>
         <h2 style={{ margin: "1%" }}>List of Books</h2>
@@ -139,7 +139,7 @@ function Home() {
           </Link>
         </div>
       </Fragment>
-    </>
+    </div>
   );
 }
 

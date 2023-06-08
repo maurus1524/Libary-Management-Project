@@ -4,15 +4,15 @@ import NavBar from './NavBar';
 
 function Startpg() {
   return (
-    <div style={{background:"#32354d"}}>
+    <div className='startbg'>
     <NavBar></NavBar>
     <div className="container">
       <div className="left-half">
-        <div className="image-container" >
+        <div className="image-container">
         <img src={logo} alt="Library" className='homeImg' style={{translate:"-10%"}}/>
         </div>
       </div>
-      <div className="right-half" style={{translate:"-4%"}}>
+      <div className="right-half" style={{translate:"-4%",border:"1px solid #1f0a38"}}>
         <h1>TechScribe Library Hub</h1>
         <p>
         Discover a world of knowledge at your fingertips. Our user-friendly digital library offers a seamless interface, empowering you to explore, borrow, and engage with captivating books. Enjoy intuitive navigation, filtering and convenient access to a vast collection of literary treasures.

@@ -32,10 +32,11 @@ function Add(){
     }
 
     return (
-        <>
+        <div className="createbg" style={{height:"100vh"}}>
             <NavBar></NavBar>
-                <Form className="d-grid gap-2" style={{margin:"15rem"}}>
-                    <Form.Group className="mb-3" controlId="formTitle" style={{width:"15%"}}>
+                <h3 style={{margin:"5%",color:"#c5c7de"}}>Details of the Book</h3>
+                <Form className="d-grid gap-2" style={{marginLeft:"15rem",marginRight:"15rem",padding:"10px"}}>
+                    <Form.Group className="mb-3" controlId="formTitle">
                         <Form.Control type="text" placeholder="Enter Book Title" required onChange={(e) => setTitle(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
@@ -51,9 +52,9 @@ function Add(){
                         <Form.Control type="text" placeholder="Enter Publish Date" required onChange={(e) => setpublishDate(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
-                    <Button onClick={(e) => handleSubmit(e)} type="submit">Submit</Button>
+                    <Button style={{width:"50%",translate:"50%",margin:"5%",background:"#0c149c"}} onClick={(e) => handleSubmit(e)} type="submit">Submit</Button>
                 </Form>
-        </>
+        </div>
     )
 }
 

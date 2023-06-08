@@ -52,7 +52,7 @@ function BookFilter() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   
 
-  return <div>
+  return <div style={{height:"100vh"}} className="bookmarkkbg">
     <NavBar></NavBar>
     <Table hover style={{marginTop:"2vh",marginBottom:"3vh"}}>
       <tr style={{display:"flex", justifyContent:"space-around" , flexDirection:"row"}}>

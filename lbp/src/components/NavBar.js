@@ -9,19 +9,19 @@ function Navbar() {
     <nav className="navbar" style={{justifyContent:"space-around",height:"10%"}}>
       <Link to="/" className="nav-link">
         <FaHome className="icon" />
-        {" Home"}
+        <span> Home</span> 
       </Link>
       <Link to="/home" className="nav-link">
         <FaBook className="icon" />
-        {" Books"}
+        <span> Book</span> 
       </Link>
       <Link to="/filter" className="nav-link">
         <TbAdjustments className="icon" />
-        {" Filter"}
+        <span> Filter</span>
       </Link>
       <Link to="/bookmark" className="nav-link">
         <BsBookmarkHeart className="icon" />
-        {" Bookmark"}
+        <span> Bookmark</span>
       </Link>
     </nav>
   );
