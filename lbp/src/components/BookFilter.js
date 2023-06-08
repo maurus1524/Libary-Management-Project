@@ -19,24 +19,34 @@ function BookFilter() {
   },[])
 
   const handleSearch = () => {
-    const newpri = userData.filter(x => x.title === (title === '' ? x.title : title));
-    const newData = newpri.filter(x => x.author === (author === '' ? x.author : author))
-    .filter(y => y.subject === (subject === '' ? y.subject : subject));
+    const titleWords = title.toLowerCase().split(' ');
+    const authorWords = author.toLowerCase().split(' ');
+
+    const newpri = userData.filter(x => {
+      const lowercaseTitle = x.title.toLowerCase();
+      const lowercaseAuthor = x.author.toLowerCase();
+      const titleMatch = titleWords.some(word => lowercaseTitle.includes(word));
+      const authorMatch = authorWords.some(word => lowercaseAuthor.includes(word));
+
+      return (titleMatch || title === '') && (authorMatch || author === '');
+    });
+
+    const newData = newpri.filter(y => y.subject.toLowerCase().includes(subject.toLowerCase()) || subject === '');
     setuserSearchData(newData);
   }
 
   return <div>
     <NavBar></NavBar>
-    <Table>
-      <tr>
+    <Table hover style={{marginTop:"2vh",marginBottom:"3vh"}}>
+      <tr style={{display:"flex", justifyContent:"space-around" , flexDirection:"row"}}>
         <td>
-          <input type="text" placeholder="Enter Title..." onChange={(e) => setTitle(e.target.value)} />
+          <input type="text" placeholder="Enter Title..." onChange={(e) => setTitle(e.target.value)} style={{width:"20vw"}}/>
         </td>
         <td>
-          <input className="form-control" type="text" placeholder="Enter Author..." onChange={(e) => setAuthor(e.target.value)} />
+          <input className="form-control" type="text" placeholder="Enter Author..." onChange={(e) => setAuthor(e.target.value)} style={{border: "0.5px solid black",borderRadius:"0px",boxShadow:"inset 0.5px 0.5px 0.5px black",width:"20vw"}} />
         </td>
         <td>
-          <select className="form-control" onChange={(e) => setSubject(e.target.value)}>
+          <select className="form-control" onChange={(e) => setSubject(e.target.value)} style={{border: "0.5px solid black",borderRadius:"0px",boxShadow:"inset 0.5px 0.5px 0.5px black", width:"20vw"}} >
             <option value="">-Select-</option>
             <option value="Fiction">Fiction</option>
             <option value="Classic">Classic</option>
@@ -49,12 +59,12 @@ function BookFilter() {
           </select>
         </td>
         <td>
-          <button className="btn btn-filter" onClick={() => handleSearch()}>Search</button>
+          <button className="btn btn-filter" style={{background:"#080202", color:"white", borderRadius:"4px",width:"8vw"}} onClick={() => handleSearch()}>Search</button>
         </td>
       </tr>
     </Table>
 
-    <Table responsive stripped size="sm">
+    <Table responsive striped bordered hover size="sm">
       <thead>
         <tr>
           <th>Title</th>
